@@ -95,9 +95,9 @@ analytics:
 # Site Author
 author:
   name             : "Herman Streltsov"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an **amazing** person."
-  location         : "Planet Earth"
+  avatar           : "/assets/images/my_avatar.jpg"
+  bio              : 
+  location         :
   email            : # mail@streltsov.dev
   links:
     - label: "Email"
@@ -105,7 +105,7 @@ author:
       url: "mailto:mail@streltsov.dev"
     - label: "Website"
       icon: "fas fa-fw fa-link"
-      url: "https://streltsov.dev"
+      # url: "https://streltsov.dev"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       url: "https://twitter.com/HermanStreltsov"
