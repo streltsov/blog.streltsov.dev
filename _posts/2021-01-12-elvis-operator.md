@@ -78,6 +78,26 @@ user.address?.street?.name
 ```
 Уже 63 символа против 26! Думаю стало понятно чем полезен Элвис оператор и теперь перейдем к тому как его еще можно применять и как он работает.
 
+## Опциональный вызов функции или метода
+
+Элвис оператор можно использовать при вызове функции:
+
+```js
+fn?.(x)
+```
+
+Если `fn` это функция, то она вызовется с аргументом x. Если `fn` равно `undefined` или `null`, то выражение порсто вернет `undefined`. 
+
+
+Why does foo?.() throw when foo is neither nullish nor callable?
+
+    Imagine a library which will call a handler function, e.g. onChange, just when the user has provided it. If the user provides the number 3 instead of a function, the library will likely want to throw and inform the user of their mistaken usage. This is exactly what the proposed semantics for onChange?.() achieve.
+
+    Moreover, this ensures that ?. has a consistent meaning in all cases. Instead of making calls a special case where we check typeof foo === 'function', we simply check foo == null across the board.
+
+    Finally, remember that optional chaining is not an error-suppression mechanism.
+
+
 ## Как работает Элвис оператор
 
 Если левая сторона оператора `?.` равна `undefined` или `null`, все выражение примет значение `undefined`:
@@ -98,3 +118,8 @@ if (foo === undefined || foo === null) {
 ```
 
 ## Сокращенное выполнение (short-circuiting)
+
+## Производительность
+Вероятно, вы заметили, что использование опциональных последовательностей означает дополнительную нагрузку на систему. Всё дело в том, что каждый раз, когда используется оператор ?., система вынуждена проводить дополнительные проверки. Злоупотребление оператором ?. может заметно повлиять на производительность программ.
+
+Я посоветовал бы вам использовать эту возможность вместе с некоей системой проверки, которая позволяет анализировать объекты при их получении откуда-либо или при их создании. Это сократит необходимость в использовании конструкции ?. и ограничит её воздействие на производительность.
