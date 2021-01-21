@@ -86,17 +86,47 @@ user.address?.street?.name
 fn?.(x)
 ```
 
-Если `fn` это функция, то она вызовется с аргументом x. Если `fn` равно `undefined` или `null`, то выражение порсто вернет `undefined`. 
+Если `fn` это функция, то она вызовется с аргументом x. Если `fn` равно `undefined` или `null`, то выражение просто вернет `undefined`. 
 
+Это может быть полезно в случае, когда колбэк функция не пеердана в качестве аргумента:
 
-Why does foo?.() throw when foo is neither nullish nor callable?
+```js
+function fn(someArgument, callback) {
 
-    Imagine a library which will call a handler function, e.g. onChange, just when the user has provided it. If the user provides the number 3 instead of a function, the library will likely want to throw and inform the user of their mistaken usage. This is exactly what the proposed semantics for onChange?.() achieve.
+  // ... здесь делается что-то полезное
 
-    Moreover, this ensures that ?. has a consistent meaning in all cases. Instead of making calls a special case where we check typeof foo === 'function', we simply check foo == null across the board.
+  callback?.() // Безопасный вызов
+              // потенциально несуществующей функции
+              
+}
+```
 
-    Finally, remember that optional chaining is not an error-suppression mechanism.
+Здесь важно заметить, что если левая сторона элвис оператора не равна `undefined` или `null` и не является функцией, выскочит ошибка `TypeError`:
 
+```js
+const string = "some string";
+
+string?.() // TypeError: string is not a function
+
+```
+Элвис оператор работает только с `null` и `undefined`. Если например вы пытаетесь вызвать строку как функцию, то скорее всего это не преднамеренно, это ошибка в коде и вы должны об этом знать.
+
+Представьте, что вместо вместо колбэк функции в примере выше, будет передано число `45`. В этом случае очевидно, что разработчик что-то напутал, и ошибка подскажет ему об этом.
+
+Также, это обеспечивает одинаковую работу элвис оператора во всех случаях. Вместо того чтобы делать вызовы каким-то особенным случаем и проверять что `typeof callback == 'function'`, он просто каждый раз проверяет только на `null` и `undefined`.
+
+Помните, что оператор опциональной последовательности это не способ подавления или скрытия ошибок.
+
+## Опциональный динамический доступ к свойству объекта
+
+Конечно, оператор опциональной последовательности можно использовать при динамическом доступе к свойству объекта:
+
+```js
+obj?.[key];
+obj?.[key + 'something'];
+```
+
+Работает все так же как и со статическим доступом.
 
 ## Как работает Элвис оператор
 
